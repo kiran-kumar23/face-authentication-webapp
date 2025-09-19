@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+/* ---------------- Basic Styles ---------------- */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+/* Header */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #6610f2; /* Changed color */
+}
+
+.logo i {
+    margin-right: 10px;
+}
+
+.search-bar {
+    display: flex;
+    flex-grow: 1;
+    margin: 0 20px;
+    max-width: 500px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+}
+
+.search-bar button {
+    background-color: #6610f2; /* Changed color */
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 12px;
+    margin-left: -40px;
+    cursor: pointer;
+}
+
+.login-button {
+    background-color: #6610f2; /* Changed color */
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #5a0e9c; /* Changed hover color */
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.user-profile i {
+    margin-right: 8px;
+    font-size: 28px;
+    color: #555;
+}
+
+/* Main Container */
+.container {
+    display: flex;
+    margin-top: 20px;
+    flex-wrap: nowrap;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #fff;
+    padding: 20px 0;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li a {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    text-decoration: none;
+    color: #555;
+    transition: background-color 0.3s;
+}
+
+.sidebar li a i {
+    margin-right: 15px;
+}
+
+.sidebar li.active a,
+.sidebar li a:hover {
+    background-color: #e9e2f9; /* Changed background color to a lighter shade of the theme color */
+    color: #6610f2; /* Changed text color */
+    border-right: 4px solid #6610f2; /* Changed border color */
+}
+
+/* Main Content */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.profile-section {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.profile-section h2 {
+    color: #6610f2; /* Changed color */
+    margin-bottom: 20px;
+}
+
+.profile-details {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.detail-item {
+    display: flex;
+    align-items: center;
+}
+
+.detail-label {
+    font-weight: bold;
+    color: #555;
+    min-width: 150px;
+}
+
+.detail-value {
+    color: #333;
+}
+
+/* Linked Accounts section specific styles */
+.linked-account {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    transition: border-color 0.3s;
+}
+
+.linked-account:hover {
+    border-color: #6610f2; /* Changed hover color */
+}
+
+.account-info {
+    display: flex;
+    align-items: center;
+}
+
+.account-info i {
+    font-size: 24px;
+    color: #6610f2; /* Changed icon color */
+    margin-right: 15px;
+}
+
+.account-info h3 {
+    margin: 0;
+    font-size: 16px;
+    color: #333;
+}
+
+.link-status {
+    font-size: 14px;
+    color: #6c757d;
+}
+
+.unlink-button {
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.unlink-button:hover {
+    background-color: #c82333;
+}
+
+
+/* ---------------- Mobile Responsive ---------------- */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        box-shadow: none;
+        padding: 10px 0;
+        display: flex;
+        overflow-x: auto;
+    }
+
+    .sidebar ul {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .sidebar li a {
+        padding: 10px 15px;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    .main-content {
+        padding: 10px;
+    }
+
+    .profile-section {
+        padding: 15px;
+    }
+
+    .detail-label {
+        min-width: 100px;
+    }
+}
+</style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <i class="material-icons">cloud</i>
+            <span>MyLocker</span>
+        </div>
+        <div class="user-profile">
+            <i class="material-icons">account_circle</i>
+            <span id="userName">Loading...</span>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <ul>
+                    <li><a href="/"><i class="material-icons">home</i>Home</a></li>
+                    <li class="active"><a href="#"><i class="material-icons">person</i>Profile</a></li>
+                    <li><a href="#"><i class="material-icons">file_copy</i>My Documents</a></li>
+                    <li><a href="#"><i class="material-icons">settings</i>Settings</a></li>
+                    <li><a href="#" id="logoutBtn"><i class="material-icons">logout</i>Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <section class="profile-section">
+                <h2>User Profile</h2>
+                <div class="profile-details">
+                    <div class="detail-item">
+                        <span class="detail-label">Name:</span>
+                        <span class="detail-value" id="displayName"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Email:</span>
+                        <span class="detail-value" id="displayEmail"></span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">Member Since:</span>
+                        <span class="detail-value" id="displayJoinDate"></span>
+                    </div>
+                </div>
+            </section>
+            
+            <section class="profile-section">
+                <h2>Linked Accounts</h2>
+                <div class="linked-accounts-list">
+                    <div class="linked-account">
+                        <div class="account-info">
+                            <i class="material-icons">account_balance</i>
+                            <h3>Bank Account</h3>
+                        </div>
+                        <button class="unlink-button">Unlink</button>
+                    </div>
+                    <div class="linked-account">
+                        <div class="account-info">
+                            <i class="material-icons">account_balance_wallet</i>
+                            <h3>e-Wallet</h3>
+                        </div>
+                        <button class="unlink-button">Unlink</button>
+                    </div>
+                    <div class="linked-account">
+                        <div class="account-info">
+                            <i class="material-icons">school</i>
+                            <h3>University Portal</h3>
+                        </div>
+                        <button class="unlink-button">Unlink</button>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+ <script>
+document.addEventListener('DOMContentLoaded', () => {
+    // User info is passed from Flask session directly
+    const userName = "{{ user.username }}";
+
+    // Fill profile fields
+    document.getElementById('userName').innerText = userName;
+    document.getElementById('displayName').innerText = userName;
+    document.getElementById('displayEmail').innerText = userName + "@example.com";
+    document.getElementById('displayJoinDate').innerText = "—"; // Optional
+
+    // Sidebar active item logic
+    const sidebarLinks = document.querySelectorAll('.sidebar ul li');
+    sidebarLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            sidebarLinks.forEach(item => item.classList.remove('active'));
+            e.currentTarget.classList.add('active');
+        });
+    });
+
+    // Logout button simply redirects to /logout
+    const logoutBtn = document.getElementById("logoutBtn");
+    if (logoutBtn) {
+        logoutBtn.addEventListener("click", () => {
+            window.location.href = "/logout";
+        });
+    }
+});
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+<style>
+/* Basic Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #f0f2f5;
+    color: #333;
+     background-color: #f0f2f5;
+    background-image: linear-gradient(to bottom, #f0f2f5, #e0e2e5); /* Soft gradient for subtle depth */
+}
+
+/* Header */
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 30px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #6610f2; /* Changed color */
+}
+
+.logo i {
+    margin-right: 10px;
+}
+
+.search-bar {
+    display: flex;
+    flex-grow: 1;
+    margin: 0 20px;
+    max-width: 500px;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    outline: none;
+}
+
+.search-bar button {
+    background-color: #6610f2;
+    color: #fff;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 12px;
+    margin-left: -40px;
+    cursor: pointer;
+}
+
+/* Login Button & User Profile */
+.login-button {
+    background-color: #6610f2;
+    color: #fff;
+    padding: 8px 20px;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #5a0e9c; /* Changed hover color */
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+}
+
+.user-profile i {
+    margin-right: 8px;
+    font-size: 28px;
+    color: #555;
+}
+
+/* Main Container */
+.container {
+    display: flex;
+    margin-top: 20px;
+    flex-wrap: nowrap;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 250px;
+    background-color: #fff;
+    padding: 20px 0;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.05);
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar li a {
+    display: flex;
+    align-items: center;
+    padding: 15px 30px;
+    text-decoration: none;
+    color: #555;
+    transition: background-color 0.3s;
+}
+
+.sidebar li a i {
+    margin-right: 15px;
+}
+
+.sidebar li.active a,
+.sidebar li a:hover {
+    background-color: #e9e2f9; /* Changed background color to a lighter shade of the theme color */
+    color: #6610f2; /* Changed text color */
+    border-right: 4px solid #6610f2; /* Changed border color */
+}
+
+/* Main Content */
+.main-content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.dashboard-section {
+    margin-bottom: 30px;
+}
+
+.dashboard-section h2 {
+    color: #6610f2; /* Changed color */
+    margin-bottom: 20px;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s, box-shadow 0.2s; /* Added box-shadow transition */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(102, 16, 242, 0.15); /* Interactive shadow on hover */
+}
+
+/* This new rule makes the icon and text change color on hover */
+.card:hover .card-icon,
+.card:hover .card-content h3 {
+    color: #6610f2; /* Changed color on hover */
+}
+
+.card-icon {
+    font-size: 40px;
+    color: #555; /* Changed base color for better hover effect */
+    margin-right: 15px;
+    transition: color 0.2s; /* Added color transition */
+}
+
+.card-content h3 {
+    margin: 0 0 5px 0;
+    font-size: 18px;
+    color: #333;
+    transition: color 0.2s; /* Added color transition */
+}
+
+.card-content p {
+    margin: 0;
+    font-size: 14px;
+    color: #777;
+}
+
+/* ---------------- Mobile Responsive ---------------- */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        box-shadow: none;
+        padding: 10px 0;
+        display: flex;
+        overflow-x: auto;
+    }
+
+    .sidebar ul {
+        display: flex;
+        flex-direction: row;
+    }
+
+    .sidebar li a {
+        padding: 10px 15px;
+        font-size: 14px;
+        white-space: nowrap;
+    }
+
+    .main-content {
+        padding: 10px;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .search-bar {
+        max-width: 100%;
+        margin: 0 10px;
+    }
+}
+
+/* Footer */
+.footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 20px;
+    margin-top: auto;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.footer-content a {
+    color: #fff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-content a:hover {
+    color: #6610f2;
+}
+
+.social-icons a {
+    font-size: 24px;
+    margin: 0 10px;
+}
+
+.footer-bottom {
+    margin-top: 15px;
+    font-size: 14px;
+}
+</style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <i class="material-icons">cloud</i>
+            <span>MyLocker</span>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search documents...">
+            <button><i class="material-icons">search</i></button>
+        </div>
+      <div class="user-profile">
+    {% if session.get('username') %}
+        <span>Welcome, {{ session.username }}</span>
+    {% else %}
+        <a href="/faceauth" class="login-button">Login</a>
+    {% endif %}
+</div>
+
+
+    </header>
+
+    <div class="container">
+        <aside class="sidebar">
+            <nav>
+                <ul>
+    <li class="active"><a href="/"><i class="material-icons">home</i>Home</a></li>
+    {% if session.get('username') %}
+        <li><a href="/profile"><i class="material-icons">person</i>Profile</a></li>
+        <li><a href="/logout"><i class="material-icons">logout</i>Logout</a></li>
+    {% endif %}
+    <li><a href="#"><i class="material-icons">file_copy</i>Issued Documents</a></li>
+    <li><a href="#"><i class="material-icons">cloud_upload</i>Uploaded Documents</a></li>
+    <li><a href="#"><i class="material-icons">link</i>Linked Services</a></li>
+    <li><a href="#"><i class="material-icons">settings</i>Settings</a></li>
+    <li><a href="#"><i class="material-icons">help_outline</i>Help</a></li>
+</ul>
+
+
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <section class="dashboard-section">
+                <h2>Issued Documents</h2>
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon"><i class="material-icons">description</i></div>
+                        <div class="card-content">
+                            <h3>Aadhaar Card</h3>
+                            <p>Issued by UIDAI</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="material-icons">directions_car</i></div>
+                        <div class="card-content">
+                            <h3>Driving License</h3>
+                            <p>Issued by Ministry of Road Transport</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="material-icons">school</i></div>
+                        <div class="card-content">
+                            <h3>Class XII Marksheet</h3>
+                            <p>Issued by CBSE</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="material-icons">ballot</i></div>
+                        <div class="card-content">
+                            <h3>Voter ID Card</h3>
+                            <p>Issued by Election Commission</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="material-icons">credit_card</i></div>
+                        <div class="card-content">
+                            <h3>PAN Card</h3>
+                            <p>Issued by Income Tax Dept.</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="material-icons">date_range</i></div>
+                        <div class="card-content">
+                            <h3>Birth Certificate</h3>
+                            <p>Issued by Registrar of Births & Deaths</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="material-icons">local_hospital</i></div>
+                        <div class="card-content">
+                            <h3>Health Insurance</h3>
+                            <p>Issued by Health Provider</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="dashboard-section">
+                <h2>Uploaded Documents</h2>
+                <div class="cards-grid">
+                    <div class="card">
+                        <div class="card-icon"><i class="material-icons">folder_open</i></div>
+                        <div class="card-content">
+                            <h3>Passport</h3>
+                            <p>Scanned copy</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon"><i class="material-icons">credit_card</i></div>
+                        <div class="card-content">
+                            <h3>PAN Card</h3>
+                            <p>Scanned copy</p>
+                        </div>
+                    </div>
+                     <div class="card">
+                        <div class="card-icon"><i class="material-icons">archive</i></div>
+                        <div class="card-content">
+                            <h3>Academic Transcripts</h3>
+                            <p>University records</p>
+                        </div>
+                    </div>
+                     <div class="card">
+                        <div class="card-icon"><i class="material-icons">medical_services</i></div>
+                        <div class="card-content">
+                            <h3>Health Records</h3>
+                            <p>Medical reports</p>
+                        </div>
+                    </div>
+                     <div class="card">
+                        <div class="card-icon"><i class="material-icons">home</i></div>
+                        <div class="card-content">
+                            <h3>Property Papers</h3>
+                            <p>Sale deed copies</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <footer class="footer">
+        <div class="footer-content">
+            <a href="#">About Us</a>
+            <a href="#">Contact</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <div class="social-icons">
+                <a href="#"><i class="material-icons">public</i></a>
+                <a href="#"><i class="material-icons">facebook</i></a>
+                <a href="#"><i class="material-icons">camera_alt</i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2024 MyLocker. All rights reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const sidebarLinks = document.querySelectorAll('.sidebar ul li');
+
+            sidebarLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // Remove 'active' class from all links
+                    sidebarLinks.forEach(item => item.classList.remove('active'));
+                    // Add 'active' class to the clicked link
+                    e.currentTarget.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

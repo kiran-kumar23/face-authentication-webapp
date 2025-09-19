@@ -1,0 +1,310 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Face Authentication Demo</title>
+
+    
+    <style>
+        body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+.container {
+    background-color: #fff;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 450px;
+    width: 90%;
+}
+
+h1 {
+    color: #6610f2;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+p {
+    color: #555;
+    margin-top: 0;
+    margin-bottom: 2rem;
+}
+
+#video {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+    background-color: #000;
+    margin-bottom: 2rem;
+}
+
+.button-group {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+button {
+    background-color: #6610f2;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    flex-grow: 1;
+    min-width: 120px;
+}
+
+button:hover {
+    background-color: #520dc2;
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* --- Modal (Popup) Styles --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: none; /* Hidden by default */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px); /* A cool visual effect */
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 400px;
+    text-align: center;
+    animation: slideIn 0.3s ease-out;
+    position: relative;
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.modal-title {
+    color: #6610f2;
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal-input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    box-sizing: border-box; /* Ensures padding doesn't affect total width */
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-around;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.modal-actions .btn-cancel {
+    background-color: #ccc;
+}
+
+.modal-actions .btn-cancel:hover {
+    background-color: #b0b0b0;
+}
+
+#modal-message {
+    color: #555;
+    margin-bottom: 1rem;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Face Authentication Demo</h1>
+        <p>Use your camera to sign up or log in with your face.</p>
+
+        <p id="livenessMessage">Blink twice or smile to continue...</p>
+        <video id="video" autoplay playsinline></video>
+        <div class="button-group">
+            <button id="btnSignup">Signup</button>
+            <button id="btnLogin">Login</button>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="myModal">
+        <div class="modal-content">
+            <h2 class="modal-title" id="modal-title"></h2>
+            <p id="modal-message"></p>
+            <div id="modal-form-area" class="modal-form">
+                <input type="text" id="usernameInput" class="modal-input" placeholder="Enter your username">
+                <div class="modal-actions">
+                    <button id="modal-submit" type="button">Submit</button>
+                    <button id="modal-cancel" type="button" class="btn-cancel">Cancel</button>
+                </div>
+            </div>
+            <div id="modal-message-area" style="display:none;">
+                <div class="modal-actions">
+                    <button id="modal-close" type="button">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    const video = document.getElementById('video');
+    const modal = document.getElementById('myModal');
+    const modalTitle = document.getElementById('modal-title');
+    const modalMessage = document.getElementById('modal-message');
+    const modalFormArea = document.getElementById('modal-form-area');
+    const modalMessageArea = document.getElementById('modal-message-area');
+    const usernameInput = document.getElementById('usernameInput');
+
+    // Camera access
+    navigator.mediaDevices.getUserMedia({ video: true })
+    .then(stream => { video.srcObject = stream; })
+    .catch(err => {
+        console.error("Error accessing camera:", err);
+        showModal('Camera Access Error', 'Enable camera to continue.', false);
+    });
+
+    function showModal(title, message, isForm) {
+        modalTitle.textContent = title;
+        modalMessage.textContent = message;
+        modalFormArea.style.display = isForm ? 'flex' : 'none';
+        modalMessageArea.style.display = isForm ? 'none' : 'block';
+        modal.style.display = 'flex';
+    }
+
+    function hideModal() {
+        modal.style.display = 'none';
+        usernameInput.value = '';
+    }
+
+    // Capture image
+    function captureImage() {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+        return canvas.toDataURL('image/jpeg', 0.8);
+    }
+
+    // ----------------- Liveness (blink + smile together) -----------------
+    async function checkLiveness() {
+        let frames = [];
+        for (let i = 0; i < 30; i++) { // ~6 sec
+            frames.push(captureImage());
+            await new Promise(r => setTimeout(r, 200));
+        }
+
+        let resp = await fetch('/liveness_check', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ frames })
+        });
+        const result = await resp.json();
+        return result.success;
+    }
+
+    // ----------------- Signup -----------------
+    document.getElementById('btnSignup').onclick = () => {
+        showModal('Sign Up', 'Please enter a username to begin.', true);
+        document.getElementById('modal-submit').onclick = async () => {
+            const username = usernameInput.value.trim();
+            if (!username) { modalMessage.textContent = 'Enter a valid username.'; return; }
+            hideModal();
+            showModal('Signing Up...', 'Capturing facial data...', false);
+
+            const images = [];
+            for (let i = 0; i < 5; i++) {
+                images.push(captureImage());
+                await new Promise(r => setTimeout(r, 300));
+            }
+
+            try {
+                const response = await fetch('/signup', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({ username, images })
+                });
+                const result = await response.json();
+
+                if (response.ok && result.status === 'ok') {
+                    window.location.href = "/profile";
+                } else {
+                    showModal('Signup Failed', result.error || 'Unknown error', false);
+                }
+            } catch (err) {
+                console.error(err);
+                showModal('Error', 'Signup failed.', false);
+            }
+        };
+    };
+
+    // ----------------- Login -----------------
+    document.getElementById('btnLogin').onclick = async () => {
+        showModal('Logging In...', 'Blink twice or smile for verification.', false);
+
+        const livenessOk = await checkLiveness();
+        if (!livenessOk) {
+            showModal('Failed', 'Liveness check failed. Try again.', false);
+            return;
+        }
+
+        const image = captureImage();
+        const response = await fetch('/login_face', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({ image })
+        });
+        const result = await response.json();
+        if (response.ok && result.status === 'ok') {
+            window.location.href = "/profile"; // Session-based login
+        } else {
+            showModal('Login Failed', result.error || 'No match found.', false);
+        }
+    };
+
+    // Modal buttons
+    document.getElementById('modal-cancel').onclick = hideModal;
+    document.getElementById('modal-close').onclick = hideModal;
+    modal.onclick = (event) => { if (event.target === modal) hideModal(); };
+    </script>
+</body>
+
+</html>
