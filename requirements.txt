@@ -6,3 +6,4 @@ facenet-pytorch
 numpy
 pillow
 opencv-python
+faiss-cpu
