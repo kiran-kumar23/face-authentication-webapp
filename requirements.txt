@@ -1,9 +1,8 @@
-flask
-gunicorn
+Flask
 torch
 torchvision
 facenet-pytorch
-numpy
-pillow
-opencv-python
 faiss-cpu
+opencv-python-headless
+numpy
+Pillow
